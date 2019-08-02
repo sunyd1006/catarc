@@ -6,27 +6,23 @@
 
 
 #  目录说明
-
+```
 /catarc
-
-|—— .vscode : .vscode的配置文件，且整个项目使用基于项目根目录的相对路径
-
-|——        img ： model模块中调用的图片，eg: peopleCM.jpg 和 peopleGB.jpg。将被 `driveModel.py` 调用
-
+|—— .vscode :  vscode的配置文件，且整个项目使用基于项目根目录的相对路径
+        |—— img :  model模块中调用的图片，eg: peopleCM.jpg 和 peopleGB.jpg。将被 `driveModel.py` 调用    
 |——    model :  MVC模式的，M层，model层
-
-​                |—— `gymcuModel.py` 读取**GYMCU（CP210x)温度传感器**的文件
-​                |—— `jfModel.py` :读取**JF11(CH340)传感器**数据的文件
-
-​                |—— `faceModel.py` ：分析驾驶员 是否和 数据库中已存储的面部相同
-
-​                |—— `driveModel.py` ：分析图片中驾驶人物的几种状态
-
+        |—— `gymcuModel.py`: 读取**GYMCU（CP210x)温度传感器**的文件              
+        |—— `jfModel.py` : 读取**JF11(CH340)传感器**数据的文件            
+        |—— `faceModel.py` : 分析驾驶员 是否和 数据库中已存储的面部相   
+        |—— `driveModel.py`: 分析图片中驾驶人物的几种状态   
 |——      static :  Python 后端flask 框架的静态文件目录，主要存放前端Web相关的代码
-                     |——  img :  当然存放的Web 图片啦，由于 Flask 框架限制，网页中使用 /static/img/map.png 此类路径。
-|——   templates : Flask 框架要求将Html 放入templates中
+        |——  img :  当然存放的Web 图片啦，由于 Flask 框架限制，网页中使用 /static/img/map.png 此类路径。        
+|——   templates :  Flask 框架要求将Html 放入templates中
 |——    README.md : 说明文档
 |——    server.py : 在服务器中运行的文件。
+
+```
+
 
 # Model文件夹中文件说明
 
