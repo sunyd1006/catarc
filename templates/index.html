@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- <div class="container" > -->
+    <div class="container" style="width: 90%; height: 90%; ">
+        <ul class="nav nav-tabs " style="padding:0 1%;  height: 60px">
+            <li class="active">
+                <a href="#" style="background-color: #94cfe5">智能健康检测</a>
+            </li>
+            <li>
+                <a href="ai.html">人工智能场景</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container" style="width: 90%; height: 90%;">
+        <div class="row" style="margin-top: 1%">
+            <button type="button" class="btn btn-defult  col-md-2 col-md-offset-10" style=" background: #94cfe5;;">历史记录</button>
+        </div>
+    </div>
+    
+    <div class="container" style="width: 90%; height: 90%;">
+        <div class="row" style="margin-top: 1%; position: relative;">
+            <img src="/static/img/wave.png" class="img-responsive" alt="Cinque Terre">
+            <canvas id="canvas" width="1080" height="300" style="position: absolute; left: 5.3%; top:9%; ">
+            </canvas>
+        </div>
+    </div>
+    <div class="container" style="width: 90%; height: 90%;">
+        <div class="row" style="margin-top: 1%; text-align:center">
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">体温</button>
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">心率</button>
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">血氧</button>
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">收缩压</button>
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">舒张压</button>
+            <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">微循环</button>
+        </div>
+        <div class="row" style="margin-top: 1%; text-align:center">
+            <button id='temperature' type="button" class="btn btn-defult btn-lg   " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='heartRate' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='bloodOxygen' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='diastolicBp' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='systolicBp' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='microcirculation' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+        </div>
+    </div>
+    <div class="container" style="width: 90%; height: 90%;">
+        <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%;   margin-top:2%; margin-right: 1%; ">开始</button>
+        <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; margin-top:2%; ">结束</button>
+    </div>  
+    <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
+    <!-- 可选: 包含 jQuery 库 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 可选: 合并了 Bootstrap JavaScript 插件 -->
+    <script src="https://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- </div> -->
+
+    <script>
+        var x = 0; // canvas画布原点x
+        var y = 0; // canvas画布原点y
+        var x_base = x; // 我们要画的波形图的最后一个点的x坐标
+        var y_base = 180; // 我们要画的波形图的最后一个点的y坐标
+        var arrPoint = []; // 用于保存已经波形图的轨迹点
+        var index = 0; // 这个我是用来打日志用的..下面为了看清楚了多少次canvas画布
+        var step = 2; // x轴每次走的步长
+        var acdata = [];
+        var acdata_index = 0;    // acdata_index 每1.28s 绘制64个数据，用 acdata_index 索引 acdata[];
+
+        $(function () {
+            var timeGY = 1000;
+            var timeJF = 1280;
+            var timeCV = 20;
+            var temprature_itv;
+            var heartRate_jf11_ch340_itv;
+            var drawHeartRateWave_itv;
+
+            // function: to get the model Gymcu_CP210x's data
+            // fraqucy:  per 1s because we get data from model per 1s
+            // data source: Gymcu_CP210x
+            function getGYmcu_CP210x() {
+                $.ajax({
+                    url: "/startGymcu/",
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        $('#temperature').html(data['to']);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('/start/ encounters some problem.');
+                    }
+                })
+            }
+
+            // 功能：绘制心率波
+            // 频率：每隔 1.28/64 = 0.02 s 绘制一部分
+            // 绘制的数据来源：getJF11_CH340 中，从服务器获取的 data['acdata']
+
+            function drawCanvas(data_index) {
+                // 获取canvas对象和context,并进行一系列初始化
+                var canvas = document.getElementById("canvas");
+                var context = canvas.getContext("2d");
+                var width = canvas.width; // 这个是画布宽度
+                var height = canvas.height; // 这个是画图高度
+
+                context.strokeStyle = "rgb(125,0,0)";
+                context.fileStyle = "rgb(100,0,0)";
+                // 画图之前首先清理一下我们的画布,四个参数.
+                // 1.坐标原点x
+                // 2.坐标原点y
+                // 3.要清理的宽度(这里宽度用的x_base是因为canvas画布的原点不断向左移动，变相的等于画布不断变宽
+                //   之所以减一个step是需要看下文,因为在下文中,x_base每一次都会增加一个step,而我们在清理画布的时候,
+                //   我们的画布原点还没有被移动,相当于我们在清除画布时,我们的画布宽度还没有增加,所以要减一个step,当然不减也可以,没事儿)
+                // 4.画布高度
+                context.clearRect(0, 0, x_base - step, height);
+                if (x_base > width) {
+                    console.log("clear" + index);
+                    index++;
+                    // 画布原点x轴向左移动一个step的位置
+                    context.translate(step * -1, 0);
+                }
+
+                // 向数组中添加数据,将我们每一次目标到达的终点坐标添加到数组中.这里我设置的条件是,保证数组大小不会超过我的画布宽度除以step个
+                // 目的是针对画布定的,就是每一次我只画画布这么大小的图
+                var obj = {};
+                obj.x = x_base;
+                obj.y = y_base;
+                if (arrPoint.length > (width / step)) {
+                    arrPoint.splice(0, 1);
+                    console.log(arrPoint);
+                }
+                arrPoint.push(obj);
+
+                // 开始画了,在画之前先将所有的图形都画出来
+                context.beginPath();
+                for (var i = 0; i < arrPoint.length; i++) {
+                    context.lineTo(arrPoint[i].x, arrPoint[i].y);
+                }
+                // 再一次性将所有图形呈现在html上
+                context.stroke();
+                context.closePath();
+                // OK,这时候已经花完了,现在要算一算我们的下一个目标点的坐标了,算完了以后,保存在一个全局变量中
+                // 等待下次再执行画图函数时,将变量添加到数组中,让canvas画图使用
+                x_base += step;
+                y_base = acdata[data_index]*0.8;
+            }
+
+
+            // 功能：获取JF11_CH340的数据
+            // 频率：JF11模块，每隔1.28s 输出1次数据, so we get one per 1.28
+            // data source: JF11 Model.
+            function getJF11_CH340() {
+
+                $.ajax({
+                    url: "/startJf/",
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data['acdata']) {
+                            // 获得绘制心率波的数据 data['acdata']
+                            acdata = data['acdata'];
+                            $('#heartRate').html(data['heartRate']);
+                            $('#bloodOxygen').html(data['bloodOxygen']);
+                            $('#diastolicBp').html(data['diastolicBp']);
+                            $('#systolicBp').html(data['systolicBp']);
+                            $('#microcirculation').html(data['microcirculation']);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('/start/ encounters some problem.');
+                    }
+                })
+ 
+                for(acdata_index = 0; acdata_index<64; acdata_index++){
+                    drawCanvas(acdata_index);
+                }
+            }
+
+
+            // Frequency: per 1 s.
+            function temp_run() {
+                temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
+                heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
+                // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
+
+            }
+
+            // to execute when the button 'start' is clicked.
+            $("#start").click(function () {
+                // temp_run() 这是定时刷新 GYmcu_CP210x, JF11_CH340 的方法
+                temp_run();
+            });
+
+            // to execute when the button 'end' is clicked.
+            $("#end").click(function () {
+                $.get("/end/", function (data, status) {
+                    clearInterval(temprature_itv);
+                    clearInterval(heartRate_jf11_ch340_itv);
+                    clearInterval(drawHeartRateWave_itv);
+                });
+            });
+        })
+    </script>
+</body>
+
+</html>
