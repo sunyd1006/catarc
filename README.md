@@ -9,17 +9,17 @@
 ```
 /catarc
 |—— .vscode :  vscode的配置文件，且整个项目使用基于项目根目录的相对路径
-        |—— img :  model模块中调用的图片，eg: peopleCM.jpg 和 peopleGB.jpg。将被 `driveModel.py` 调用    
-|——    model :  MVC模式的，M层，model层
+|—— img :  model模块中调用的图片，eg: peopleCM.jpg 和 peopleGB.jpg。将被 `driveModel.py` 调用    
+|—— model :  MVC模式的，M层，model层
         |—— `gymcuModel.py`: 读取**GYMCU（CP210x)温度传感器**的文件              
         |—— `jfModel.py` : 读取**JF11(CH340)传感器**数据的文件            
         |—— `faceModel.py` : 分析驾驶员 是否和 数据库中已存储的面部相   
         |—— `driveModel.py`: 分析图片中驾驶人物的几种状态   
-|——      static :  Python 后端flask 框架的静态文件目录，主要存放前端Web相关的代码
+|—— static :  Python 后端flask 框架的静态文件目录，主要存放前端Web相关的代码
         |——  img :  当然存放的Web 图片啦，由于 Flask 框架限制，网页中使用 /static/img/map.png 此类路径。        
-|——   templates :  Flask 框架要求将Html 放入templates中
-|——    README.md : 说明文档
-|——    server.py : 在服务器中运行的文件。
+|—— templates :  Flask 框架要求将Html 放入templates中
+|—— README.md : 说明文档
+|—— server.py : 在服务器中运行的文件。
 
 ```
 
@@ -31,7 +31,8 @@
 
 2. 浏览器端：在 浏览器中输入 （http://localhost:5000/index.html)
 
-3. Linux中，Shell 报错 Permission denied（没有权限允许）
+3. 常见问题
+① Linux中，Shell 报错 Permission denied（没有权限允许）
 
    - linux 下面没有对USB设备的访问权限导致的，所以要执行以下指令
 
@@ -43,7 +44,7 @@
 
    - 或者已经在其他程序代开过，比如重插
    
-4. Linux中 `img` 文件夹中图片下载失败：
+② Linux中 `img` 文件夹中图片下载失败：
 
    - 是 `img`  的读写权限可能有问题，改读写权限即可。
 
