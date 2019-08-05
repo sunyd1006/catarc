@@ -23,13 +23,14 @@
             </li>
         </ul>
     </div>
-
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%">
-            <button type="button" class="btn btn-defult  col-md-2 col-md-offset-10" style=" background: #94cfe5;;">历史记录</button>
+            <button type="button" id='mydate' class="btn btn-defult  col-md-2  " style="background-color: #94cfe5; margin-left: 3%;">0000-00-00</button>
+            <button type="button" id='mytime' class="btn btn-defult  col-md-1 col-md-offset-3" style="background-color: #94cfe5;">00:00</button>
+            <button type="button" class="btn btn-defult  col-md-2 col-md-offset-3" style="background-color: #94cfe5; margin-left: 30%;">历史记录</button>
         </div>
     </div>
-    
+   
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%; position: relative;">
             <img src="/static/img/wave.png" class="img-responsive" alt="Cinque Terre">
@@ -188,15 +189,6 @@
                 }
             }
 
-
-            // Frequency: per 1 s.
-            function temp_run() {
-                temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
-                heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
-                // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
-
-            }
-
             // to execute when the button 'start' is clicked.
             $("#start").click(function () {
                 // temp_run() 这是定时刷新 GYmcu_CP210x, JF11_CH340 的方法
@@ -211,6 +203,24 @@
                     clearInterval(drawHeartRateWave_itv);
                 });
             });
+
+            var dateItv;
+            // 每1min 更新一次界面的时间
+            function updateTimeAndDate() {
+                dateItv = setInterval(function () {
+                    var day = new Date(+new Date() + 8 * 3600 * 1000);
+                    var daystr = day.toISOString();
+                    $('#mydate').html(daystr.substring(0, 10));
+                    $('#mytime').html(daystr.substring(11, 16));
+                }, 5000);
+            }
+            
+            updateTimeAndDate();
+            function temp_run() {
+                temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
+                heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
+                // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
+            }
         })
     </script>
 </body>
