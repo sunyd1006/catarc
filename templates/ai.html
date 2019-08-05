@@ -7,7 +7,7 @@
     <!-- 包含头部信息用于适应不同设备 与 高德的css库-->
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-    
+
 
     <!-- 包含 bootstrap 样式表 -->
     <!-- 新 Bootstrap 核心 CSS 文件 -->
@@ -47,7 +47,7 @@
         <div class="row" style="margin-top: 1%">
             <div class="col-md-8" style="height: 500px;">
                 <!-- <img src="/static/img/map.png" alt="导航地图" style="width:100%;"> -->
-                
+
                 <!-- 加载地图JSAPI脚本-->
                 <div id="container"></div>
                 <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
@@ -58,7 +58,14 @@
                         zoom: 16, //初始化地图层级
                         center: [117.08787, 39.143254] //初始化地图中心点
                     });
+                    AMap.plugin(['AMap.ToolBar', 'AMap.Driving'], function () {//异步同时加载多个插件
+                        var toolbar = new AMap.ToolBar();
+                        map.addControl(toolbar);
+                        var driving = new AMap.Driving();//驾车路线规划
+                        driving.search(/*参数*/)
+                    });
                 </script>
+                <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
 
             </div>
             <div class="col-md-4">
@@ -84,7 +91,7 @@
                 </div>
                 <div class="row" style="margin-bottom:7%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">手握方向盘</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 " >{{handLeavingWheel}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{handLeavingWheel}}</button>
                 </div>
             </div>
         </div>
@@ -111,7 +118,7 @@
             updateTimeAndDate();
         })
     </script>
-    
+
 </body>
 
 </html>
