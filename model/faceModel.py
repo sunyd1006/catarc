@@ -75,7 +75,7 @@ def downPicFromYinshi(token, path):
 # 获取相似度 picture1 picture2
 def getScore(pic1, pic2):
     # 下载图片到某文件夹。
-    path = './img/peopleCM.jpg'
+    path = '/img/peopleCM.jpg'
     downPicFromYinshi(getTokenYinshi(), path)
 
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
