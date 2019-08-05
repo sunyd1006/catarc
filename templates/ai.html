@@ -15,8 +15,8 @@
 
     <style>
         #container {
-            width: 50%;
-            height: 50%;
+            width: 100%;
+            height: 100%;
             border: red;
         }
     </style>
@@ -38,55 +38,53 @@
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%">
             <button type="button" id='mydate' class="btn btn-defult  col-md-2  " style="background-color: #94cfe5; margin-left: 3%; color: black;">0000-00-00</button>
-            <button type="button" id='mytime' class="btn btn-defult  col-md-1 col-md-offset-3" style="background-color: #94cfe5; color: black;">00:00</button>
+            <button type="button" id='mytime' class="btn btn-defult  col-md-1 col-md-offset-3" style="background-color: #94cfe5; color: black;">00:00:00</button>
             <button type="button" class="btn btn-defult  col-md-2 col-md-offset-3" style="background-color: #94cfe5; margin-left: 30%; color: black;">历史记录</button>
         </div>
     </div>
 
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%">
-            <div class="col-md-8">
-                <img src="/static/img/map.png" alt="导航地图" style="width:100%;">
+            <div class="col-md-8" style="height: 500px;">
+                <!-- <img src="/static/img/map.png" alt="导航地图" style="width:100%;"> -->
                 
-                <!-- 加载地图JSAPI脚本
+                <!-- 加载地图JSAPI脚本-->
                 <div id="container"></div>
                 <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
                 <script src="https://webapi.amap.com/maps?v=1.4.15&key=bc71a9dd961bdbc41d34a006c4bc8114"></script>
                 <script>
                     var map = new AMap.Map('container', {
                         resizeEnable: true, //是否监控地图容器尺寸变化
-                        zoom: 11, //初始化地图层级
-                        center: [116.397428, 39.90923] //初始化地图中心点
+                        zoom: 16, //初始化地图层级
+                        center: [117.08787, 39.143254] //初始化地图中心点
                     });
-                </script> -->
+                </script>
 
             </div>
             <div class="col-md-4">
-                <div class="container ">
-                    <div class="row" style="margin-bottom:3%; margin-top: 1%;">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">人脸校验</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 ">{{faceScore}}</button>
-                    </div>
-                    <div class="row" style="margin-bottom:3%">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">未接打电话</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 ">{{phoneScore}}</button>
-                    </div>
-                    <div class="row" style="margin-bottom:3%">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">未抽烟</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 ">{{smokeScore}}</button>
-                    </div>
-                    <div class="row" style="margin-bottom:3%">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">已系安全带</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 ">{{seatBeltScore}}</button>
-                    </div>
-                    <div class="row" style="margin-bottom:3%">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">双眼看前方</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 ">{{lookAheadScore}}</button>
-                    </div>
-                    <div class="row" style="margin-bottom:3%">
-                        <button type="button" class="btn btn-default btn-lg col-md-3 " style="margin-right: 2%; background-color: #94cfe5">手握方向盘</button>
-                        <button type="button" class="btn btn-default btn-lg col-md-1 " >{{handLeavingWheel}}</button>
-                    </div>
+                <div class="row" style="margin-bottom:7%; margin-top: 10%;">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">人脸校验</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{faceScore}}</button>
+                </div>
+                <div class="row" style="margin-bottom:7%">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">未接打电话</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{phoneScore}}</button>
+                </div>
+                <div class="row" style="margin-bottom:7%">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">未抽烟</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{smokeScore}}</button>
+                </div>
+                <div class="row" style="margin-bottom:7%">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">已系安全带</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{seatBeltScore}}</button>
+                </div>
+                <div class="row" style="margin-bottom:7%">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">双眼看前方</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{lookAheadScore}}</button>
+                </div>
+                <div class="row" style="margin-bottom:7%">
+                    <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">手握方向盘</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " >{{handLeavingWheel}}</button>
                 </div>
             </div>
         </div>
@@ -107,8 +105,8 @@
                     var day = new Date(+new Date() + 8 * 3600 * 1000);
                     var daystr = day.toISOString();
                     $('#mydate').html(daystr.substring(0, 10));
-                    $('#mytime').html(daystr.substring(11, 16));
-                }, 5000);
+                    $('#mytime').html(daystr.substring(11, 19));
+                }, 1000);
             }
             updateTimeAndDate();
         })
