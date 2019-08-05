@@ -37,9 +37,9 @@
 
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%">
-            <button type="button" id='date' class="btn btn-defult  col-md-2  " style="background-color: #94cfe5; margin-left: 3%;">0000-00-00</button>
-            <button type="button" id='time' class="btn btn-defult  col-md-1 col-md-offset-3" style="background-color: #94cfe5;">00:00</button>
-            <button type="button" class="btn btn-defult  col-md-2 col-md-offset-3" style="background-color: #94cfe5; margin-left: 30%;">历史记录</button>
+            <button type="button" id='mydate' class="btn btn-defult  col-md-2  " style="background-color: #94cfe5; margin-left: 3%; color: black;">0000-00-00</button>
+            <button type="button" id='mytime' class="btn btn-defult  col-md-1 col-md-offset-3" style="background-color: #94cfe5; color: black;">00:00</button>
+            <button type="button" class="btn btn-defult  col-md-2 col-md-offset-3" style="background-color: #94cfe5; margin-left: 30%; color: black;">历史记录</button>
         </div>
     </div>
 
@@ -106,8 +106,8 @@
                 dateItv = setInterval(function () {
                     var day = new Date(+new Date() + 8 * 3600 * 1000);
                     var daystr = day.toISOString();
-                    $('#date').html(daystr.substring(0, 10));
-                    $('#time').html(daystr.substring(11, 16));
+                    $('#mydate').html(daystr.substring(0, 10));
+                    $('#mytime').html(daystr.substring(11, 16));
                 }, 5000);
             }
             updateTimeAndDate();
