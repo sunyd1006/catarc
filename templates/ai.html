@@ -106,8 +106,8 @@
                 dateItv = setInterval(function () {
                     var day = new Date(+new Date() + 8 * 3600 * 1000);
                     var daystr = day.toISOString();
-                    $('#date').text(daystr.substring(0, 10));
-                    $('#time').text(daystr.substring(11, 16));
+                    $('#date').html(daystr.substring(0, 10));
+                    $('#time').html(daystr.substring(11, 16));
                 }, 5000);
             }
             updateTimeAndDate();
