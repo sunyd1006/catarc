@@ -66,9 +66,11 @@ def findPort():
     else:
         # port_serial 默认是None, 若对应的模块插入，才返回端口号。
         port_serial = None
-        # item like ['com4', Silicon Las Cp210x Usb to UART Bridge(COM4)', 'USB VID:PID=10C4:EA60 SER=0001 LOCATION=1-3']
+        # Windows item like ['com*', 'CH340 *****', USB VID:PID=1A86:7523 SER=0001 LOCATION=1-3']
+        # linux item like ['/dev/ttyUSB0', 'USB2.0-Serial', 'USB VID:PID=1A86:7523 LOCATION=*******']
         for item in port_list:
-            if 'CH340' in item[1]:
+            item = list(item)
+            if 'VID:PID=1A86:7523' in item[2]:
                 port_serial = item[0]
         return port_serial
 

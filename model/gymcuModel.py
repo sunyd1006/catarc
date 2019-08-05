@@ -55,10 +55,10 @@ def findPort():
     else:
         # port_serial 默认是None, 若对应的模块插入，才返回端口号。
         port_serial = None
-        # item like ['com4', Silicon Las Cp210x Usb to UART Bridge(COM4)', 'USB VID:PID=10C4:EA60 SER=0001 LOCATION=1-3']
+        # item like ['com4', Silicon Las CP210x Usb to UART Bridge(COM4)', 'USB VID:PID=10C4:EA60 SER=0001 LOCATION=1-3']
         for item in port_list:
-            if 'CP210x' in item[1]:
-
+            item = list(item)
+            if 'VID:PID=10C4:EA60' in item[2]:
                 port_serial = item[0]
         return port_serial
 

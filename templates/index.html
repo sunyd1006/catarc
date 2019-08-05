@@ -30,11 +30,11 @@
             <button type="button" class="btn btn-defult  col-md-2 col-md-offset-3" style="background-color: #94cfe5; margin-left: 30%;">历史记录</button>
         </div>
     </div>
-   
+
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%; position: relative;">
             <img src="/static/img/wave.png" class="img-responsive" alt="Cinque Terre">
-            <canvas id="canvas" width="1080" height="300" style="position: absolute; left: 5.3%; top:9%; ">
+            <canvas id="canvas" width="1000" height="300" style="position: absolute; left: 5.3%; top:9%; ">
             </canvas>
         </div>
     </div>
@@ -51,15 +51,15 @@
             <button id='temperature' type="button" class="btn btn-defult btn-lg   " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
             <button id='heartRate' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
             <button id='bloodOxygen' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='diastolicBp' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='systolicBp' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='systolicBp' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='diastolicBp' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
             <button id='microcirculation' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
         </div>
     </div>
     <div class="container" style="width: 90%; height: 90%;">
         <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%;   margin-top:2%; margin-right: 1%; ">开始</button>
         <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; margin-top:2%; ">结束</button>
-    </div>  
+    </div>
     <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
     <!-- 可选: 包含 jQuery 库 -->
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -154,7 +154,7 @@
                 // OK,这时候已经花完了,现在要算一算我们的下一个目标点的坐标了,算完了以后,保存在一个全局变量中
                 // 等待下次再执行画图函数时,将变量添加到数组中,让canvas画图使用
                 x_base += step;
-                y_base = acdata[data_index]*0.8;
+                y_base = acdata[data_index] * 0.8;
             }
 
 
@@ -183,8 +183,8 @@
                         console.log('/start/ encounters some problem.');
                     }
                 })
- 
-                for(acdata_index = 0; acdata_index<64; acdata_index++){
+
+                for (acdata_index = 0; acdata_index < 64; acdata_index++) {
                     drawCanvas(acdata_index);
                 }
             }
@@ -203,25 +203,27 @@
                     clearInterval(drawHeartRateWave_itv);
                 });
             });
-
-            var dateItv;
-            // 每1min 更新一次界面的时间
-            function updateTimeAndDate() {
-                dateItv = setInterval(function () {
-                    var day = new Date(+new Date() + 8 * 3600 * 1000);
-                    var daystr = day.toISOString();
-                    $('#mydate').html(daystr.substring(0, 10));
-                    $('#mytime').html(daystr.substring(11, 19));
-                }, 1000);
-            }
-            
-            updateTimeAndDate();
             function temp_run() {
                 temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
                 heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
                 // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
             }
         })
+    </script>
+
+    <script>
+        var dateItv;
+        // 每1min 更新一次界面的时间
+        function updateTimeAndDate() {
+            dateItv = setInterval(function () {
+                var day = new Date(+new Date() + 8 * 3600 * 1000);
+                var daystr = day.toISOString();
+                $('#mydate').html(daystr.substring(0, 10));
+                $('#mytime').html(daystr.substring(11, 19));
+            }, 1000);
+        }
+
+        updateTimeAndDate();
     </script>
 </body>
 
