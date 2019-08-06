@@ -189,6 +189,12 @@
                 }
             }
 
+            function temp_run() {
+                temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
+                heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
+                // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
+            }
+
             // to execute when the button 'start' is clicked.
             $("#start").click(function () {
                 // temp_run() 这是定时刷新 GYmcu_CP210x, JF11_CH340 的方法
@@ -203,11 +209,6 @@
                     clearInterval(drawHeartRateWave_itv);
                 });
             });
-            function temp_run() {
-                temprature_itv = setInterval(getGYmcu_CP210x, timeGY);
-                heartRate_jf11_ch340_itv = setInterval(getJF11_CH340, timeJF);
-                // drawHeartRateWave_itv = setInterval(drawCanvas, timeCV);
-            }
         })
     </script>
 

@@ -97,6 +97,12 @@
         </div>
     </div>
 
+
+    <div class="container" style="width: 90%; height: 90%;">
+        <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%;   margin-top:2%; margin-right: 1%; ">开始</button>
+        <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; margin-top:2%; ">结束</button>
+    </div>
+
     <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
     <!-- 可选: 包含 jQuery 库 -->
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -116,6 +122,20 @@
                 }, 1000);
             }
             updateTimeAndDate();
+
+
+            // to execute when the button 'start' is clicked.
+            $("#start").click(function () {
+                // temp_run() 这是定时刷新  的方法
+                temp_run();
+            });
+
+            // to execute when the button 'end' is clicked.
+            $("#end").click(function () {
+                $.get("/end/", function (data, status) {
+                    // clearInterval(temprature_itv);
+                });
+            });
         })
     </script>
 
