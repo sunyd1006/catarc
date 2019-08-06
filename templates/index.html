@@ -48,17 +48,17 @@
             <button type="button" class="btn btn-defult " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">微循环</button>
         </div>
         <div class="row" style="margin-top: 1%; text-align:center">
-            <button id='temperature' type="button" class="btn btn-defult btn-lg   " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='heartRate' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='bloodOxygen' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='systolicBp' type="button" class="btn btn-defult btn-lg " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='diastolicBp' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
-            <button id='microcirculation' type="button" class="btn btn-defult btn-lg  " style=" background: #94cfe5;  width: 15.3%; margin-right: 1%">0</button>
+            <button id='temperature' type="button" class="btn btn-defult btn-lg   " style=" width: 15.3%; margin-right: 1%">0</button>
+            <button id='heartRate' type="button" class="btn btn-defult btn-lg " style="width: 15.3%; margin-right: 1%">0</button>
+            <button id='bloodOxygen' type="button" class="btn btn-defult btn-lg " style=" width: 15.3%; margin-right: 1%">0</button>
+            <button id='systolicBp' type="button" class="btn btn-defult btn-lg " style=" width: 15.3%; margin-right: 1%">0</button>
+            <button id='diastolicBp' type="button" class="btn btn-defult btn-lg  " style=" width: 15.3%; margin-right: 1%">0</button>
+            <button id='microcirculation' type="button" class="btn btn-defult btn-lg  " style=" width: 15.3%; margin-right: 1%">0</button>
         </div>
     </div>
     <div class="container" style="width: 90%; height: 90%;">
-        <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%;   margin-top:2%; margin-right: 1%; ">开始</button>
-        <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; margin-top:2%; ">结束</button>
+        <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%; opacity: 0.8;  margin-top:2%; margin-right: 1%; ">开始</button>
+        <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; opacity: 0.8; margin-top:2%; ">结束</button>
     </div>
     <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
     <!-- 可选: 包含 jQuery 库 -->
@@ -85,24 +85,6 @@
             var temprature_itv;
             var heartRate_jf11_ch340_itv;
             var drawHeartRateWave_itv;
-
-            // function: to get the model Gymcu_CP210x's data
-            // fraqucy:  per 1s because we get data from model per 1s
-            // data source: Gymcu_CP210x
-            function getGYmcu_CP210x() {
-                $.ajax({
-                    url: "/startGymcu/",
-                    type: "POST",
-                    dataType: "json",
-                    async: false,
-                    success: function (data) {
-                        $('#temperature').html(data['to']);
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        console.log('/start/ encounters some problem.');
-                    }
-                })
-            }
 
             // 功能：绘制心率波
             // 频率：每隔 1.28/64 = 0.02 s 绘制一部分
@@ -177,6 +159,39 @@
                             $('#diastolicBp').html(data['diastolicBp']);
                             $('#systolicBp').html(data['systolicBp']);
                             $('#microcirculation').html(data['microcirculation']);
+
+                            // 设置背景颜色
+                            $('#heartRate').removeClass();
+                            if (data['heartRate'] < 60 || data['heartRate'] > 100) {
+                                $('#heartRate').addClass('btn btn-danger btn-lg');
+                            } else {
+                                $('#heartRate').addClass('btn btn-success btn-lg');
+                            }
+
+                            $('#bloodOxygen').removeClass();
+                            if (data['tbloodOxygeno'] < 94) {
+                                $('#bloodOxygen').addClass('btn btn-danger btn-lg');
+                            } else {
+                                $('#bloodOxygen').addClass('btn btn-success btn-lg');
+                            }
+                            // 收缩压
+                            $('#systolicBp').removeClass();
+                            if (data['systolicBp'] < 90 || data['systolicBp'] > 139) {
+                                $('#systolicBp').addClass('btn btn-danger btn-lg');
+                            } else {
+                                $('#systolicBp').addClass('btn btn-success btn-lg');
+                            }
+                            // 舒展压
+                            $('#diastolicBp').removeClass();
+                            if (data['diastolicBp'] < 60  || data['diastolicBp'] > 89 ) {
+                                $('#diastolicBp').addClass('btn btn-danger btn-lg');
+                            } else {
+                                $('#diastolicBp').addClass('btn btn-success btn-lg');
+                            }
+
+                            // 微循环没有指标
+                            $('#microcirculation').removeClass();
+                            $('#microcirculation').addClass('btn btn-success btn-lg');
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -187,6 +202,32 @@
                 for (acdata_index = 0; acdata_index < 64; acdata_index++) {
                     drawCanvas(acdata_index);
                 }
+            }
+
+            // function: to get the model Gymcu_CP210x's data
+            // fraqucy:  per 1s because we get data from model per 1s
+            // data source: Gymcu_CP210x
+            function getGYmcu_CP210x() {
+                $.ajax({
+                    url: "/startGymcu/",
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        tem = $('#temperature');
+                        tem.html(data['to']);
+                        // 清楚标签样式
+                        tem.removeClass();
+                        if (data['to'] < 36.2 || data['to'] > 37.2) {
+                            tem.addClass('btn btn-danger btn-lg');
+                        } else {
+                            tem.addClass('btn btn-success btn-lg');
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('/start/ encounters some problem.');
+                    }
+                })
             }
 
             function temp_run() {
