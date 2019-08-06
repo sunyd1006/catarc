@@ -77,38 +77,43 @@ def startJf():
         resultjf.update(temp)
     return json.dumps(resultjf)
 
-
 @app.route('/end/', methods=['GET'])
-def end():
+def endIndex():
     global resultgymcu
     global resultjf
     result = dict(resultgymcu, **resultjf)
     return json.dumps(result)
 
-
 @app.route('/ai.html')
 def ai():
+    # 初始页面，没有get参数
+    return render_template('ai.html')
+
+@app.route('/startAi/', methods=['POST'])
+def startAi():
     # 用的相对与GUI_FALSK的路径。
-    faceScore = '%.2f' % face.getScore('img/peopleCM.jpg', 'img/peopleGB.jpg')
-    # faceScore = 0
+    # face.getScore() 返回类似：88.88
+    faceScore = '%.2f' % (face.getScore('img/peopleCM.jpg', 'img/peopleGB.jpg'))
     dirveDict = drive.getFiveSocre()
     print('driverDict..................................', dirveDict is None)
     if dirveDict is not None:
         print('dirveDict', dirveDict)
-        phoneScore = '%.2f' %  ( 1- dirveDict['cellphone']['score'] )
-        smokeScore = '%.2f' % ( 1- dirveDict['smoke']['score'] )
-        seatBeltScore ='%.2f' % (1- dirveDict['not_buckling_up']['score'])
-        lookAheadScore ='%.2f' % ( 1- dirveDict['not_facing_front']['score'])
-        handLeavingWheel = '%.2f' % (1- dirveDict['both_hands_leaving_wheel']['score'])
+        phoneScore =  '%.2f' % (( 1- dirveDict['cellphone']['score'] )*100 )
+        smokeScore = '%.2f' % (( 1- dirveDict['smoke']['score'] )*100)
+        seatBeltScore ='%.2f' % ((1- dirveDict['not_buckling_up']['score'])*100)
+        lookAheadScore ='%.2f' % (( 1- dirveDict['not_facing_front']['score'])*100)
+        handLeavingWheelScore = '%.2f' % ((1- dirveDict['both_hands_leaving_wheel']['score'])*100)
     else:
         phoneScore = 0
         smokeScore = 0
         seatBeltScore = 0
         lookAheadScore = 0
-        handLeavingWheel = 0
+        handLeavingWheelScore = 0
     param = {'faceScore': faceScore, 'phoneScore': phoneScore, 'smokeScore': smokeScore,
-             'seatBeltScore': seatBeltScore, 'lookAheadScore': lookAheadScore, 'handLeavingWheel': handLeavingWheel}
-    return render_template('ai.html', **param)
+             'seatBeltScore': seatBeltScore, 'lookAheadScore': lookAheadScore, 'handLeavingWheelScore': handLeavingWheelScore}
+    return json.dumps(param)
+
+
 
 
 if __name__ == '__main__':

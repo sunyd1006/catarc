@@ -69,38 +69,38 @@
 
             </div>
             <div class="col-md-4">
-                <div class="row" style="margin-bottom:7%; margin-top: 10%;">
+                <div class="row" style="margin-bottom:6%; margin-top: 3%;">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">人脸校验</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{faceScore}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="faceScore" >0</button>
                 </div>
-                <div class="row" style="margin-bottom:7%">
+                <div class="row" style="margin-bottom:6%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">未接打电话</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{phoneScore}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="phoneScore" >0</button>
                 </div>
-                <div class="row" style="margin-bottom:7%">
+                <div class="row" style="margin-bottom:6%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">未抽烟</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{smokeScore}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="smokeScore" >0</button>
                 </div>
-                <div class="row" style="margin-bottom:7%">
+                <div class="row" style="margin-bottom:6%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">已系安全带</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{seatBeltScore}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="seatBeltScore" >0</button>
                 </div>
-                <div class="row" style="margin-bottom:7%">
+                <div class="row" style="margin-bottom:6%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">双眼看前方</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{lookAheadScore}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="lookAheadScore" >0</button>
                 </div>
-                <div class="row" style="margin-bottom:7%">
+                <div class="row" style="margin-bottom:6%">
                     <button type="button" class="btn btn-default btn-lg col-md-8 " style=" background-color: #94cfe5">手握方向盘</button>
-                    <button type="button" class="btn btn-default btn-lg col-md-4 ">{{handLeavingWheel}}</button>
+                    <button type="button" class="btn btn-default btn-lg col-md-4 " id="handLeavingWheelScore" >0</button>
                 </div>
+
+                <div class="row" style="margin-bottom:6%">
+                    <button type="button" id="start" class="btn btn-success btn-lg col-md-12 " >开始</button>
+                </div>
+                
+
             </div>
         </div>
-    </div>
-
-
-    <div class="container" style="width: 90%; height: 90%;">
-        <button type="button" id="start" class="btn btn-success btn-lg " style=" width:49%;   margin-top:2%; margin-right: 1%; ">开始</button>
-        <button type="button" id="end" class="btn btn-danger btn-lg " style="width: 49%; margin-top:2%; ">结束</button>
     </div>
 
     <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
@@ -123,11 +123,87 @@
             }
             updateTimeAndDate();
 
-
             // to execute when the button 'start' is clicked.
             $("#start").click(function () {
-                // temp_run() 这是定时刷新  的方法
-                temp_run();
+                $.ajax({
+                    url: "/startAi/",
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        face=$('#faceScore');
+                        face.text(data['faceScore']);
+
+                        phone=$('#phoneScore');
+                        phone.text(data['phoneScore']);
+                         
+                        smoke = $('#smokeScore');
+                        smoke.text(data['smokeScore']);
+
+                        seatBelt =$('#seatBeltScore');
+                        seatBelt.text(data['seatBeltScore']);
+
+                        lookAhead = $('#lookAheadScore');
+                        lookAhead.text(data['lookAheadScore']);
+
+                        handLeavingWheel=$('#handLeavingWheelScore');
+                        handLeavingWheel.text(data['handLeavingWheelScore']);
+                        
+                        console.log(data);
+                        
+                        if(data['faceScore']<80){
+                            face.removeClass();
+                            face.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            face.removeClass();
+                            face.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                        if(data['phoneScore']<80){
+                            phone.removeClass();
+                            phone.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            phone.removeClass();
+                            phone.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                        if(data['smokeScore']<80){
+                            smoke.removeClass();
+                            smoke.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            smoke.removeClass();
+                            smoke.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                        if(data['seatBeltScore']<80){
+                            seatBelt.removeClass();
+                            seatBelt.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            seatBelt.removeClass();
+                            seatBelt.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                        if(data['lookAheadScore']<80){
+                            lookAhead.removeClass();
+                            lookAhead.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            lookAhead.removeClass();
+                            lookAhead.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                        if(data['handLeavingWheelScore']<80){
+                            handLeavingWheel.removeClass();
+                            handLeavingWheel.addClass('btn btn-danger btn-lg col-md-4 ');
+                        }else{
+                            handLeavingWheel.removeClass();
+                            handLeavingWheel.addClass('btn btn-default btn-lg col-md-4 ');
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log('/startAi/ encounters some problem.');
+                    }
+                })
             });
 
             // to execute when the button 'end' is clicked.
