@@ -114,7 +114,5 @@ def startAi():
     return json.dumps(param)
 
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)

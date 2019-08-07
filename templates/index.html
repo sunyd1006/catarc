@@ -34,7 +34,7 @@
     <div class="container" style="width: 90%; height: 90%;">
         <div class="row" style="margin-top: 1%; position: relative;">
             <img src="/static/img/wave.png" class="img-responsive" alt="Cinque Terre">
-            <canvas id="canvas" width="1000" height="300" style="position: absolute; left: 5.3%; top:9%; ">
+            <canvas id="canvas" width="1080" height="300" style="position: absolute; left: 5.3%; top:9%; ">
             </canvas>
         </div>
     </div>
@@ -168,10 +168,12 @@
                                 $('#heartRate').addClass('btn btn-success btn-lg');
                             }
 
-                            $('#bloodOxygen').removeClass();
-                            if (data['tbloodOxygeno'] < 94) {
+                            console.log(data['bloodOxygen']);
+                            if (data['bloodOxygen'] < 94) {
+                                $('#bloodOxygen').removeClass();
                                 $('#bloodOxygen').addClass('btn btn-danger btn-lg');
                             } else {
+                                $('#bloodOxygen').removeClass();
                                 $('#bloodOxygen').addClass('btn btn-success btn-lg');
                             }
                             // 收缩压
@@ -191,7 +193,11 @@
 
                             // 微循环没有指标
                             $('#microcirculation').removeClass();
-                            $('#microcirculation').addClass('btn btn-success btn-lg');
+                            if (data['microcirculation'] < 50 ) {
+                                $('#microcirculation').addClass('btn btn-danger btn-lg');
+                            } else {
+                                $('#microcirculation').addClass('btn btn-success btn-lg');
+                            }
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
